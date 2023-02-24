@@ -56,6 +56,6 @@ def inv(A: SparseMatrix) -> SparseMatrix:
     return diag(1.0 / A.val, A.shape)
 
 
-SparseMatrix.neg = neg
+# SparseMatrix.neg = neg
 SparseMatrix.__neg__ = neg
-SparseMatrix.inv = inv
+# SparseMatrix.inv = inv

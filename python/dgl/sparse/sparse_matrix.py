@@ -1,14 +1,13 @@
 """DGL sparse matrix module."""
 # pylint: disable= invalid-name
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
 import torch
-
 
 class SparseMatrix:
     r"""Class for sparse matrix."""
 
-    c_sparse_matrix : torch.classes.dgl_sparse.SparseMatrix
+    c_sparse_matrix: torch.classes.dgl_sparse.SparseMatrix
 
     def __init__(self, c_sparse_matrix: torch.classes.dgl_sparse.SparseMatrix):
         self.c_sparse_matrix = c_sparse_matrix
@@ -28,9 +27,8 @@ class SparseMatrix:
         """
         return self.c_sparse_matrix.val()
 
-    @torch.jit.unused
     @property
-    def shape(self) -> Tuple[int, int]:
+    def shape(self) -> List[int]:
         """Returns the shape of the sparse matrix.
 
         Returns
@@ -38,7 +36,7 @@ class SparseMatrix:
         Tuple[int]
             The shape of the sparse matrix
         """
-        return tuple(self.c_sparse_matrix.shape())
+        return self.c_sparse_matrix.shape()
 
     @property
     def nnz(self) -> int:
@@ -144,7 +142,7 @@ class SparseMatrix:
         """
         return self.c_sparse_matrix.indices()
 
-    def csr(self) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def csr(self) -> Tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]]:
         r"""Returns the compressed sparse row (CSR) representation of the sparse
         matrix.
 
