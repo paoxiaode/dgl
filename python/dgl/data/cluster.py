@@ -2,7 +2,9 @@
 import os
 
 from .dgl_dataset import DGLBuiltinDataset
+from .. import backend as F
 from .utils import _get_dgl_url, load_graphs
+from dgl.data.utils import load_graphs, Subset
 
 
 class CLUSTERDataset(DGLBuiltinDataset):
@@ -127,6 +129,12 @@ class CLUSTERDataset(DGLBuiltinDataset):
             - ``edata['feat']``: edge features
         """
         if self._transform is None:
-            return self._graphs[idx]
+            if isinstance(idx, int):
+                return self._graphs[idx]
+            elif F.is_tensor(idx):
+                if F.ndim(idx) == 0:
+                    return self._graphs[idx]
+                elif F.ndim(idx) == 1:
+                    return Subset(self, idx.cpu())
         else:
             return self._transform(self._graphs[idx])
